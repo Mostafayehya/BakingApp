@@ -9,11 +9,11 @@ import android.os.Parcelable;
 
 public class Step implements Parcelable {
 
-    int id;
-    String shortDescription;
-    String description;
-    String videoUrl;
-    String thumbnailUrl;
+    public int id;
+    public String shortDescription;
+    public String description;
+    public String videoUrl;
+    public String thumbnailUrl;
 
     public Step() {
         id = 0;

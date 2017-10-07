@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.android.bakingapp.Adapters.RecipeAdapter;
 import com.example.android.bakingapp.DataModels.Recipe;
+import com.example.android.bakingapp.Utilities.NetworkUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     Context context;
-    ArrayList<Recipe> RecipeList;
+    ArrayList<Recipe> mRecipeList;
     @BindView(R.id.recipes_recycler_view)
     RecyclerView recipesRecyclerView;
     @BindView(R.id.progress_bar)
@@ -81,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
             URL movieRequestUrl = NetworkUtils.buildUrl(urlStringToBeRequested);
 
             try {
-                String jsonMovieResponse = NetworkUtils
+                String jsonRecipeResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                movieList.clear();
-                movieList.addAll(OpenMovieJsonUtils
-                        .getArrayListOfMoviesFromJson(MainActivity.this, jsonMovieResponse));
+                mRecipeList.clear();
+                mRecipeList.addAll(OpenMovieJsonUtils
+                        .getArrayListOfMoviesFromJson(MainActivity.this, jsonRecipeResponse));
 
                 return movieList;
 

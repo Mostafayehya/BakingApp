@@ -7,26 +7,26 @@ import android.os.Parcelable;
  * Created by mostafayehya on 02/10/17.
  */
 
-public class Ingerdient implements Parcelable {
+public class Ingredient implements Parcelable {
 
-    int quantity;
-    String measurment;
-    String name;
+    public int quantity;
+    public String measurment;
+    public String name;
 
-    public Ingerdient() {
+    public Ingredient() {
         quantity = 0;
         measurment = "";
         name = "";
 
     }
 
-    public Ingerdient(int quantity, String measurment, String name) {
+    public Ingredient(int quantity, String measurment, String name) {
         this.quantity = quantity;
         this.measurment = measurment;
         this.name = name;
     }
 
-    private Ingerdient(Parcel in) {
+    private Ingredient(Parcel in) {
 
         quantity = in.readInt();
         measurment = in.readString();
@@ -40,15 +40,15 @@ public class Ingerdient implements Parcelable {
         parcel.writeString(name);
     }
 
-    public static final Parcelable.Creator<Ingerdient> CREATOR = new Parcelable.Creator<Ingerdient>() {
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
         @Override
-        public Ingerdient createFromParcel(Parcel parcel) {
-            return new Ingerdient(parcel);
+        public Ingredient createFromParcel(Parcel parcel) {
+            return new Ingredient(parcel);
         }
 
         @Override
-        public Ingerdient[] newArray(int size) {
-            return new Ingerdient[size];
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
         }
 
     };
