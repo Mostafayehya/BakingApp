@@ -12,23 +12,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/no_internet_error_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/error_message"
-            android:textSize="40sp"
-            android:visibility="invisible" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
-
-
     </android.support.v7.widget.RecyclerView>
+
+    <!--placing another views inside the recyclerView tag causes an error of recyclerView has no LayoutManagerr  -->
+
+
+    <TextView
+        android:id="@+id/no_internet_error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/error_message"
+        android:textSize="40sp"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
 
 </merge>

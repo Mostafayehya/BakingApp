@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.bakingapp.DataModels.Ingredient;
 import com.example.android.bakingapp.DataModels.Recipe;
+import com.example.android.bakingapp.DataModels.Step;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.RecipeDetailsActivity;
 
@@ -29,8 +31,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private Context context;
 
     public RecipeAdapter(Context context) {
+
         mRecipeList = new ArrayList<>();
         this.context = context;
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -43,6 +47,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
 
         String recipeName = mRecipeList.get(position).name;
+        int servingsNumber = mRecipeList.get(position).servings;
+        int stepsNumber = mRecipeList.get(position).stepsList.size();
+
+        holder.mTextViewRecipeName.setText(recipeName);
+        holder.mTextViewServings.setText(servingsNumber);
+        holder.mTextViewStepsNumber.setText(stepsNumber);
 
 
     }
@@ -52,17 +62,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return 0;
     }
 
-    class RecipeViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
+    class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public
         @BindView(R.id.recipe_name)
         TextView mTextViewRecipeName;
 
         public
-        @BindView (R.id.servings)
+        @BindView(R.id.servings)
         TextView mTextViewServings;
 
         public
-        @BindView (R.id.steps)
+        @BindView(R.id.steps)
         TextView mTextViewStepsNumber;
 
         public RecipeViewHolder(View itemView) {
@@ -80,9 +90,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
             Recipe selectedRecipe = mRecipeList.get(adapterPosition);
 
-            Intent toStartRecipeDetailsActivity = new Intent(context,RecipeDetailsActivity.class);
+            ArrayList<Ingredient> selectedIngredient = selectedRecipe.ingredientList;
+            ArrayList<Step> selectedSteps = selectedRecipe.stepsList;
 
-            toStartRecipeDetailsActivity.putExtra("Recipe",selectedRecipe);
+            Intent toStartRecipeDetailsActivity = new Intent(context, RecipeDetailsActivity.class);
+
+            toStartRecipeDetailsActivity.putExtra("Ingredients", selectedIngredient);
+            toStartRecipeDetailsActivity.putExtra("Steps", selectedSteps);
 
             //used the context as a refer to the MainActivity as it is the activity served by this adapter
             context.startActivity(toStartRecipeDetailsActivity);

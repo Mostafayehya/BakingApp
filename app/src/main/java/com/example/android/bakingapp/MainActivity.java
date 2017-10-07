@@ -1,12 +1,12 @@
 package com.example.android.bakingapp;
 
 import android.content.Context;
-import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.android.bakingapp.Adapters.RecipeAdapter;
 import com.example.android.bakingapp.DataModels.Recipe;
 import com.example.android.bakingapp.Utilities.NetworkUtils;
+import com.example.android.bakingapp.Utilities.OpenRecipeJsonUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     Context context;
-    ArrayList<Recipe> mRecipeList;
+    ArrayList<Recipe> mRecipeList, mIngredientsList, mStepsList;
     @BindView(R.id.recipes_recycler_view)
     RecyclerView recipesRecyclerView;
     @BindView(R.id.progress_bar)
@@ -41,10 +42,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         context = this;
-
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recipeAdapter = new RecipeAdapter(this);
 
+
+        recipesRecyclerView.setLayoutManager(layoutManager);
+
         recipesRecyclerView.setAdapter(recipeAdapter);
+
+        if (!isOnline()) {
+            showErrorMessage();
+        }
+
+        requestRecipesFromTheInternet();
 
 
     }
@@ -55,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
         recipesRecyclerView.setVisibility(View.INVISIBLE);
                /* Then, show the error */
         mErrorTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void showRecipesDataView() {
+
+        mErrorTextView.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+
+        recipesRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void requestRecipesFromTheInternet() {
+
+        new fetchRecipesDataTask().execute(RECIPES_URL);
     }
 
     public class fetchRecipesDataTask extends AsyncTask<String, Void, ArrayList<Recipe>> {
@@ -86,10 +109,9 @@ public class MainActivity extends AppCompatActivity {
                         .getResponseFromHttpUrl(movieRequestUrl);
 
                 mRecipeList.clear();
-                mRecipeList.addAll(OpenMovieJsonUtils
-                        .getArrayListOfMoviesFromJson(MainActivity.this, jsonRecipeResponse));
+                mRecipeList.addAll(OpenRecipeJsonUtils.getArrayListOfRecipesFromJson(context, jsonRecipeResponse));
 
-                return movieList;
+                return mRecipeList;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,14 +119,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // TODO  add the movie list to the DB .
         @Override
-        protected void onPostExecute(ArrayList<Movie> m) {
-            if (m != null) {
-                showMoviesDataView();
-                movieAdapter.setMoviesList(m);
+        protected void onPostExecute(ArrayList<Recipe> r) {
+            if (r != null) {
+                showRecipesDataView();
+                recipeAdapter.setRecipeArrayList(r);
             }
-            super.onPostExecute(m);
+            super.onPostExecute(r);
+
         }
 
     }
