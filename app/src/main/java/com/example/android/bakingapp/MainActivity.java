@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         context = this;
+        mRecipeList = new ArrayList<>();
+        mIngredientsList = new ArrayList<>();
+        mStepsList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recipeAdapter = new RecipeAdapter(this);
 
@@ -102,11 +105,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             String urlStringToBeRequested = params[0];
-            URL movieRequestUrl = NetworkUtils.buildUrl(urlStringToBeRequested);
+            URL recipeRequestUrl = NetworkUtils.buildUrl(urlStringToBeRequested);
 
             try {
-                String jsonRecipeResponse = NetworkUtils
-                        .getResponseFromHttpUrl(movieRequestUrl);
+                String jsonRecipeResponse = NetworkUtils.getResponseFromHttpUrl(recipeRequestUrl);
 
                 mRecipeList.clear();
                 mRecipeList.addAll(OpenRecipeJsonUtils.getArrayListOfRecipesFromJson(context, jsonRecipeResponse));

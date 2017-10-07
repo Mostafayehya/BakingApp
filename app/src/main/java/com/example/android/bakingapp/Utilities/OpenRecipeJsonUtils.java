@@ -72,7 +72,8 @@ public class OpenRecipeJsonUtils {
 
                 temporaryStep.id = stepJsonObject.getInt(STEP_ID);
                 temporaryStep.shortDescription = stepJsonObject.getString(SHORT_DESCRIPTION);
-                temporaryStep.description = stepJsonObject.getString(VIDEO_URL);
+                temporaryStep.description = stepJsonObject.getString(DESCRIPTION);
+                temporaryStep.videoUrl = stepJsonObject.getString(VIDEO_URL);
                 temporaryStep.thumbnailUrl = stepJsonObject.getString(THUMBNAIL_URL);
 
                 currentRecipeObject.stepsList.add(k, temporaryStep);
