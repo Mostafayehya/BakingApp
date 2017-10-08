@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recipeAdapter = new RecipeAdapter(this);
 
+        recipesRecyclerView.setHasFixedSize(true);
+
 
         recipesRecyclerView.setLayoutManager(layoutManager);
 

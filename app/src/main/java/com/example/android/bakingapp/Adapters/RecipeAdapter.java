@@ -47,8 +47,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
 
         String recipeName = mRecipeList.get(position).name;
-        String servingsNumber = Integer.toString(mRecipeList.get(position).servings);
-        String stepsNumber = Integer.toString(mRecipeList.get(position).stepsList.size());
+        String servingsNumber = "Servings: " + Integer.toString(mRecipeList.get(position).servings);
+        String stepsNumber = "Steps: " + Integer.toString(mRecipeList.get(position).stepsList.size());
 
         holder.mTextViewRecipeName.setText(recipeName);
         holder.mTextViewServings.setText(servingsNumber);
