@@ -38,6 +38,14 @@ public class Recipe implements Parcelable {
         this.imagUrl = imagUrl;
     }
 
+    public ArrayList<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public ArrayList<Step> getStepsList() {
+        return stepsList;
+    }
+
     private Recipe(Parcel in) {
 
         id = in.readInt();

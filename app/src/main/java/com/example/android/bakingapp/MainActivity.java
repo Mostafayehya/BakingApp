@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+    }
 
     private void showErrorMessage() {
                 /* First, hide the currently visible data */
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             if (r != null) {
                 showRecipesDataView();
                 recipeAdapter.setRecipeArrayList(r);
+
             }
             super.onPostExecute(r);
 

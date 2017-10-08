@@ -2,4 +2,6 @@
     <string name="app_name">BakingApp</string>
     <string name="error_message">No internet connection</string>
     <string name="recipe_details_activity_name">Recipe Details</string>
+    <string name="recipe_ingredients">Recipe Ingredients</string>
+    <string name="recipe_steps">Recipe Steps</string>
 </resources>
