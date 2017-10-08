@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         mErrorTextView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
-
         recipesRecyclerView.setVisibility(View.VISIBLE);
     }
 

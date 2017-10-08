@@ -1,6 +1,5 @@
 package com.example.android.bakingapp.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +15,6 @@ import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.RecipeDetailsActivity;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by mostafayehya on 02/10/17.
@@ -39,7 +35,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public RecipeAdapter.RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recipe_item, parent);
+        // the replacement of null with parent caused the following
+        // error java.lang.IllegalStateException:
+        // The specified child already has a parent. You must call removeView() on the child's parent first
+        View view = mInflater.inflate(R.layout.recipe_item, null);
+
         return new RecipeViewHolder(view);
     }
 
@@ -47,8 +47,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
 
         String recipeName = mRecipeList.get(position).name;
-        int servingsNumber = mRecipeList.get(position).servings;
-        int stepsNumber = mRecipeList.get(position).stepsList.size();
+        String servingsNumber = Integer.toString(mRecipeList.get(position).servings);
+        String stepsNumber = Integer.toString(mRecipeList.get(position).stepsList.size());
 
         holder.mTextViewRecipeName.setText(recipeName);
         holder.mTextViewServings.setText(servingsNumber);
@@ -59,26 +59,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public int getItemCount() {
-        return 0;
+
+        return mRecipeList.size();
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public
-        @BindView(R.id.recipe_name)
         TextView mTextViewRecipeName;
-
-        public
-        @BindView(R.id.servings)
         TextView mTextViewServings;
-
-        public
-        @BindView(R.id.steps)
         TextView mTextViewStepsNumber;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind((Activity) context);
-
+            mTextViewRecipeName = itemView.findViewById(R.id.recipe_name);
+            mTextViewServings = itemView.findViewById(R.id.servings);
+            mTextViewStepsNumber = itemView.findViewById(R.id.steps);
             itemView.setOnClickListener(this);
 
         }

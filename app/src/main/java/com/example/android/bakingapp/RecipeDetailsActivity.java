@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
  * Created by mostafayehya on 05/10/17.
  */
 
+// you must declare your activity in the manifest before using it
 public class RecipeDetailsActivity extends AppCompatActivity {
 
     @Override

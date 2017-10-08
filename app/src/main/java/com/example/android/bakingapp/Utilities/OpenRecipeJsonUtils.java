@@ -1,6 +1,7 @@
 package com.example.android.bakingapp.Utilities;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.android.bakingapp.DataModels.Ingredient;
 import com.example.android.bakingapp.DataModels.Recipe;
@@ -11,8 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import static android.os.Build.ID;
 
 /**
  * Created by mostafayehya on 02/10/17.
@@ -48,7 +47,7 @@ public class OpenRecipeJsonUtils {
 
             JSONObject currentRecipeJsonObject = jsonReponse.getJSONObject(i);
             Recipe currentRecipeObject = new Recipe();
-            currentRecipeObject.id = currentRecipeJsonObject.getInt(ID);
+            currentRecipeObject.id = currentRecipeJsonObject.getInt(RECIPE_ID);
             currentRecipeObject.name = currentRecipeJsonObject.getString(NAME);
 
             JSONArray IngredientsJsonArray = currentRecipeJsonObject.getJSONArray(INGREDIENTS_ARRAY);
@@ -60,7 +59,6 @@ public class OpenRecipeJsonUtils {
                 temporaryIngredient.quantity = ingredientJsonObject.getInt(QUANTITY);
                 temporaryIngredient.measurment = ingredientJsonObject.getString(MEASURE);
                 temporaryIngredient.name = ingredientJsonObject.getString(INGREDIENT);
-
                 currentRecipeObject.ingredientList.add(j, temporaryIngredient);
 
             }
@@ -85,6 +83,7 @@ public class OpenRecipeJsonUtils {
 
         }
 
+        Log.d("rp:","getArrayListFromJson was invoked " );
         return parsedRecipes;
     }
 
