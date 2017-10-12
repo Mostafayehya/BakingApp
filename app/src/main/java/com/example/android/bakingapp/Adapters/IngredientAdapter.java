@@ -28,7 +28,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         mContext = context;
         mIngredientList = ingredients;
         mInflater = LayoutInflater.from(context);
-
     }
 
     @Override
@@ -56,10 +55,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         holder.ingredientName.setText(ingredientName);
         holder.ingredientQuantity.setText(ingredientQuantity);
-
-
     }
-
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
 

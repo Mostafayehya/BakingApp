@@ -21,7 +21,10 @@
         </activity>
 
         <activity android:name=".RecipeDetailsActivity"
-            android:label="@string/recipe_details_activity_name"></activity>
+            android:label="@string/recipe_details_activity_name"/>
+
+        <activity android:name=".StepDetailsActivity"
+            android:label="@string/step_details_activity_name"/>
     </application>
 
 </manifest>
