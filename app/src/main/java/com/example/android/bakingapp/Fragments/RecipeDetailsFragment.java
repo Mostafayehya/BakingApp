@@ -1,6 +1,5 @@
 package com.example.android.bakingapp.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,17 +45,17 @@ public class RecipeDetailsFragment extends Fragment {
         void onStepSelected(int position);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            mCallBack = (OnStepClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnStepClickListener");
-
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//
+//        try {
+//            mCallBack = (OnStepClickListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString() + " must implement OnStepClickListener");
+//
+//        }
+//    }
 
     public RecipeDetailsFragment() {
 
@@ -77,13 +76,13 @@ public class RecipeDetailsFragment extends Fragment {
         stepsRecyclerView.setAdapter(stepAdapter);
 
 
-        stepsRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int position = view.getVerticalScrollbarPosition();
-                mCallBack.onStepSelected(position);
-            }
-        });
+//        stepsRecyclerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int position = view.getVerticalScrollbarPosition();
+//                mCallBack.onStepSelected(position);
+//            }
+//        });
 
         return rootView;
     }
