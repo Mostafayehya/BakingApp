@@ -73,7 +73,7 @@ public class RecipeDetailsFragment extends Fragment {
         IngredientAdapter ingredientAdapter = new IngredientAdapter(getActivity(), mIngredientList);
         ingredientsRecyclerView.setAdapter(ingredientAdapter);
 
-        StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList);
+        StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList, false);
         stepsRecyclerView.setAdapter(stepAdapter);
 
 
@@ -87,3 +87,4 @@ public class RecipeDetailsFragment extends Fragment {
 
         return rootView;
     }
+}
