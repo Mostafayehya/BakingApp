@@ -41,7 +41,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public IngredientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = mInflater.inflate(R.layout.ingredient_item, null);
+        View view = mInflater.inflate(R.layout.ingredient_item, parent);
         return new IngredientViewHolder(view);
     }
 

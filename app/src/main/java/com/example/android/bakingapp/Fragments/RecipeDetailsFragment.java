@@ -38,12 +38,12 @@ public class RecipeDetailsFragment extends Fragment {
     ArrayList<Ingredient> mIngredientList;
     ArrayList<Step> mStepList;
 
-    OnStepClickListener mCallBack;
+//    OnStepClickListener mCallBack;
 
-    public interface OnStepClickListener {
-
-        void onStepSelected(int position);
-    }
+//    public interface OnStepClickListener {
+//
+//        void onStepSelected(int position);
+//    }
 
 //    @Override
 //    public void onAttach(Context context) {
@@ -59,20 +59,26 @@ public class RecipeDetailsFragment extends Fragment {
 
     public RecipeDetailsFragment() {
 
+
     }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         final View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
-        ButterKnife.bind(getActivity(), rootView); // i guessed this : D not learnt it
-
-
+        ButterKnife.bind(this, rootView);
+        if (getArguments() != null) {
+            mIngredientList = getArguments().getParcelableArrayList("Steps");
+            mStepList = getArguments().getParcelableArrayList("Ingredients");
+        }
         IngredientAdapter ingredientAdapter = new IngredientAdapter(getActivity(), mIngredientList);
         ingredientsRecyclerView.setAdapter(ingredientAdapter);
 
         StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList, false);
+        stepAdapter.setStepsList(mStepList);
         stepsRecyclerView.setAdapter(stepAdapter);
 
 

@@ -14,6 +14,9 @@ import com.example.android.bakingapp.StepDetailsActivity;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by mostafayehya on 08/10/17.
  */
@@ -23,7 +26,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     Context mContext;
     LayoutInflater mInflater;
     ArrayList<Step> mStepList;
-    boolean isTwoPane =false;
+    boolean isTwoPane = false;
 
     public StepAdapter(Context context, ArrayList<Step> stepList, boolean isTwoPane) {
         mContext = context;
@@ -35,7 +38,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     @Override
     public StepViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = mInflater.inflate(R.layout.recipe_item, null);
+        View view = mInflater.inflate(R.layout.step_item, parent);
         return new StepViewHolder(view);
     }
 
@@ -58,18 +61,20 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     }
 
     public void setStepsList(ArrayList<Step> newStepList) {
-        mStepList = newStepList;
+        mStepList.clear();
+        mStepList.addAll(newStepList);
         notifyDataSetChanged();
 
     }
 
     public class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        @BindView(R.id.step_short_description)
         TextView shortDiscription;
 
         public StepViewHolder(View itemView) {
             super(itemView);
-            shortDiscription = itemView.findViewById(R.id.step_short_description);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
@@ -83,8 +88,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
                 toStartStepDetailActivity.putExtra("clickedItemPosition", adapterPosition);
                 toStartStepDetailActivity.putExtra("stepsList", mStepList);
                 mContext.startActivity(toStartStepDetailActivity);
-            }
-            else{
+            } else {
                 //send the data to the activity through the onClick callback of the onClickListner interface in the Recipe
                 //details activity
 

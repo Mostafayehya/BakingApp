@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/recipe_ingredients"
-        android:textColor="#ff3"
+        android:textColor="#000"
         android:textSize="30sp"
         tools:text="Ingredients" />
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/recipe_steps"
-        android:textColor="#ff3"
+        android:textColor="#000"
         android:textSize="30sp"
         tools:text="Steps" />
 
