@@ -3,6 +3,7 @@ package com.example.android.bakingapp.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,18 +68,23 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         final View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
         ButterKnife.bind(this, rootView);
         if (getArguments() != null) {
-            mIngredientList = getArguments().getParcelableArrayList("Steps");
-            mStepList = getArguments().getParcelableArrayList("Ingredients");
+            mIngredientList = getArguments().getParcelableArrayList("Ingredients");
+            mStepList = getArguments().getParcelableArrayList("Steps");
         }
+
+        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        ingredientsRecyclerView.setLayoutManager(ingredientsLayoutManager);
+
+        LinearLayoutManager stepsLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        stepsRecyclerView.setLayoutManager(stepsLayoutManager);
+
         IngredientAdapter ingredientAdapter = new IngredientAdapter(getActivity(), mIngredientList);
         ingredientsRecyclerView.setAdapter(ingredientAdapter);
 
         StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList, false);
-        stepAdapter.setStepsList(mStepList);
         stepsRecyclerView.setAdapter(stepAdapter);
 
 
