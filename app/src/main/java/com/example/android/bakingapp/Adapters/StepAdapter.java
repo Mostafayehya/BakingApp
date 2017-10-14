@@ -28,6 +28,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     ArrayList<Step> mStepList;
     boolean isTwoPane = false;
 
+    public static final String CLICKED_POSITION_KEY = "clickedItemPosition";
+    public static final String STEP_LIST_KEY = "stepsList";
+
     public StepAdapter(Context context, ArrayList<Step> stepList, boolean isTwoPane) {
         mContext = context;
         mStepList = stepList;
@@ -85,8 +88,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
             if (!isTwoPane) {
                 Intent toStartStepDetailActivity = new Intent(mContext, StepDetailsActivity.class);
-                toStartStepDetailActivity.putExtra("clickedItemPosition", adapterPosition);
-                toStartStepDetailActivity.putExtra("stepsList", mStepList);
+                toStartStepDetailActivity.putExtra(CLICKED_POSITION_KEY, adapterPosition);
+                toStartStepDetailActivity.putExtra(STEP_LIST_KEY, mStepList);
                 mContext.startActivity(toStartStepDetailActivity);
             } else {
                 //send the data to the activity through the onClick callback of the onClickListner interface in the Recipe

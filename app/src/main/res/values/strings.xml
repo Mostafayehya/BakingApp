@@ -5,4 +5,6 @@
     <string name="recipe_ingredients">Recipe Ingredients</string>
     <string name="recipe_steps">Recipe Steps</string>
     <string name="step_details_activity_name">Step Details</string>
+    <string name="next_button">Next</string>
+    <string name="previous_button">Previous</string>
 </resources>
