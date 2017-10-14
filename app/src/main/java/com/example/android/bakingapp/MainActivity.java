@@ -1,11 +1,11 @@
 package com.example.android.bakingapp;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     Context context;
-    ArrayList<Recipe> mRecipeList;
+    ArrayList<Recipe> mRecipeList = new ArrayList<>();
     @BindView(R.id.recipes_recycler_view)
     RecyclerView recipesRecyclerView;
     @BindView(R.id.progress_bar)
@@ -45,26 +45,25 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         context = this;
-        mRecipeList = new ArrayList<>();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+
         recipeAdapter = new RecipeAdapter(this);
 
         recipesRecyclerView.setHasFixedSize(true);
 
 
-        recipesRecyclerView.setLayoutManager(layoutManager);
-
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ||
+                this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
         recipesRecyclerView.setAdapter(recipeAdapter);
 
         if (!isOnline()) {
             showErrorMessage();
         }
 
-        if (savedInstanceState != null) {
-            mRecipeList = savedInstanceState.getParcelableArrayList(RECIPES_KEY);
-            showRecipesDataView();
-        } else {
+        if (savedInstanceState == null) {
+
             requestRecipesFromTheInternet();
         }
 
@@ -72,10 +71,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(RECIPES_KEY, mRecipeList);
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mRecipeList = savedInstanceState.getParcelableArrayList(RECIPES_KEY);
+        recipeAdapter.setRecipeArrayList(mRecipeList);
     }
 
     private void showErrorMessage() {
@@ -98,10 +103,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class fetchRecipesDataTask extends AsyncTask<String, Void, ArrayList<Recipe>> {
+        ArrayList<Recipe> temporaryRecipeList;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
+            temporaryRecipeList = new ArrayList<>();
             if (isOnline()) {
                 recipesRecyclerView.setVisibility(View.INVISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -124,10 +132,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String jsonRecipeResponse = NetworkUtils.getResponseFromHttpUrl(recipeRequestUrl);
 
-                mRecipeList.clear();
-                mRecipeList.addAll(OpenRecipeJsonUtils.getArrayListOfRecipesFromJson(context, jsonRecipeResponse));
+                temporaryRecipeList.clear();
+                temporaryRecipeList.addAll(OpenRecipeJsonUtils.getArrayListOfRecipesFromJson(context, jsonRecipeResponse));
 
-                return mRecipeList;
+                return temporaryRecipeList;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -139,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Recipe> r) {
             if (r != null) {
                 showRecipesDataView();
-                recipeAdapter.setRecipeArrayList(r);
+                mRecipeList = r;
+                recipeAdapter.setRecipeArrayList(mRecipeList);
 
             }
             super.onPostExecute(r);
