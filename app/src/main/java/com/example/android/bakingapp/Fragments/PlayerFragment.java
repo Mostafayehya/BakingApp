@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by mostafayehya on 14/10/17.
@@ -47,7 +48,7 @@ public class PlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_exo_player, null);
-
+        ButterKnife.bind(this,rootView);
 
         return rootView;
     }
