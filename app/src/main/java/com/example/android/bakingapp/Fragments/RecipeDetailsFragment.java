@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by mostafayehya on 09/10/17.
  */
 
-public class RecipeDetailsFragment extends Fragment {
+public class RecipeDetailsFragment extends Fragment implements StepAdapter.RecyclerViewItemClickHandler {
 
     @BindView(R.id.ingredient_title)
     TextView ingredients;
@@ -38,31 +38,41 @@ public class RecipeDetailsFragment extends Fragment {
 
     ArrayList<Ingredient> mIngredientList;
     ArrayList<Step> mStepList;
+    boolean mTwoPane;
+    StepClickHandler stepClickHandler;
+    Bundle arguements;
 
-//    OnStepClickListener mCallBack;
 
-//    public interface OnStepClickListener {
-//
-//        void onStepSelected(int position);
-//    }
+    public interface StepClickHandler {
+
+        void onStepClicked(int stepPosition, ArrayList<Step> mStepList);
+    }
 
 //    @Override
 //    public void onAttach(Context context) {
 //        super.onAttach(context);
 //
 //        try {
-//            mCallBack = (OnStepClickListener) context;
+//            stepClickHandler = (StepClickHandler) context;
 //        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement OnStepClickListener");
-//
+//            throw new ClassCastException(context.toString() + "must implement StepClickHandler");
 //        }
 //    }
 
     public RecipeDetailsFragment() {
-
-
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            arguements = savedInstanceState.getBundle("arguments");
+            mTwoPane = savedInstanceState.getBoolean("mTwoPane");
+            mStepList = savedInstanceState.getParcelableArrayList("mStepList");
+            mIngredientList = savedInstanceState.getParcelableArrayList("mIngredientList");
+        }
+
+    }
 
     @Nullable
     @Override
@@ -70,9 +80,15 @@ public class RecipeDetailsFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
         ButterKnife.bind(this, rootView);
-        if (getArguments() != null) {
-            mIngredientList = getArguments().getParcelableArrayList("Ingredients");
-            mStepList = getArguments().getParcelableArrayList("Steps");
+
+        if (rootView.findViewById(R.id.recipe_details_container) != null) {
+            mTwoPane = true;
+        }
+
+        arguements = getArguments();
+        if (arguements != null) {
+            mIngredientList = arguements.getParcelableArrayList("Ingredients");
+            mStepList = arguements.getParcelableArrayList("Steps");
         }
 
         LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -84,18 +100,27 @@ public class RecipeDetailsFragment extends Fragment {
         IngredientAdapter ingredientAdapter = new IngredientAdapter(getActivity(), mIngredientList);
         ingredientsRecyclerView.setAdapter(ingredientAdapter);
 
-        StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList, false);
+        StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList, true);
         stepsRecyclerView.setAdapter(stepAdapter);
 
 
-//        stepsRecyclerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int position = view.getVerticalScrollbarPosition();
-//                mCallBack.onStepSelected(position);
-//            }
-//        });
-
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle("arguments", arguements);
+        outState.putParcelableArrayList("mIngredientList", mIngredientList);
+        outState.putParcelableArrayList("mStepList", mStepList);
+        outState.putBoolean("mTwoPane", mTwoPane);
+
+    }
+
+    @Override
+    public void onRecyclerViewItemClicked(int position, ArrayList<Step> mStepList) {
+
+        stepClickHandler.onStepClicked(position, mStepList);
+
     }
 }

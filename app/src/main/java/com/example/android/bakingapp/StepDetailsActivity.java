@@ -33,7 +33,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
     PlayerFragment newPlayerFragment;
     StepDescriptionFragment newStepDescriptionFragment;
     ControlsFragment mControlsFragment;
-    FragmentManager fragmentManager;
+    FragmentManager fragmentManager = getSupportFragmentManager();
     @BindView(R.id.exo_player_fragment)
     FrameLayout exoPlayerFragmentContainer;
     @BindView(R.id.step_description_fragment)
@@ -49,7 +49,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         ButterKnife.bind(this);
         Intent intentStartedThisActivity = getIntent();
 
-        if (intentStartedThisActivity.hasExtra(StepAdapter.STEP_LIST_KEY)) {
+        if (intentStartedThisActivity.hasExtra(StepAdapter.STEP_LIST_KEY) && savedInstanceState == null) {
             mStepList = intentStartedThisActivity
                     .getParcelableArrayListExtra(StepAdapter.STEP_LIST_KEY);
 
@@ -57,38 +57,46 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
                     getIntExtra(StepAdapter.CLICKED_POSITION_KEY, 0);
 
         }
+        if (savedInstanceState != null) {
+            mStepList = savedInstanceState.getParcelableArrayList("mStepList");
+            viewedStepPosition = savedInstanceState.getInt("viewedStepPosition");
+            newPlayerFragment = (PlayerFragment) fragmentManager.getFragment(savedInstanceState, "newPlayerFragment");
+            newStepDescriptionFragment = (StepDescriptionFragment) fragmentManager.getFragment(savedInstanceState, "newStepDescriptionFragment");
+            mControlsFragment = (ControlsFragment) fragmentManager.getFragment(savedInstanceState, "mControlsFragment");
+        } else {
 
-        fragmentManager = getSupportFragmentManager();
+            //**************** player fragment****************//
 
-        //**************** player fragment****************//
+            newPlayerFragment = new PlayerFragment();
+            videoUrl = mStepList.get(viewedStepPosition).videoUrl;
 
-        newPlayerFragment = new PlayerFragment();
-        videoUrl = mStepList.get(viewedStepPosition).videoUrl;
+            //handling steps with/without video
 
-        //handling steps with/without video
+            if (!videoUrl.equals("")) {
+                newPlayerFragment.setStepVideoUrl(videoUrl);
+                fragmentManager
+                        .beginTransaction()
+                        .add(R.id.exo_player_fragment, newPlayerFragment)
+                        .commit();
+            } else {
+                exoPlayerFragmentContainer.setVisibility(View.GONE);
+            }
 
-        if (!videoUrl.equals("")) {
-            newPlayerFragment.setStepVideoUrl(videoUrl);
+            //**************** Description fragment****************//
+
+            newStepDescriptionFragment = new StepDescriptionFragment();
+            selectedStepDescription =
+                    mStepList.get(viewedStepPosition).description;
+
+            newStepDescriptionFragment.setDescription(selectedStepDescription);
+
             fragmentManager
                     .beginTransaction()
-                    .add(R.id.exo_player_fragment, newPlayerFragment)
+                    .add(R.id.step_description_fragment, newStepDescriptionFragment)
                     .commit();
-        } else {
-            exoPlayerFragmentContainer.setVisibility(View.GONE);
+
         }
 
-        //**************** Description fragment****************//
-
-        newStepDescriptionFragment = new StepDescriptionFragment();
-        selectedStepDescription =
-                mStepList.get(viewedStepPosition).description;
-
-        newStepDescriptionFragment.setDescription(selectedStepDescription);
-
-        fragmentManager
-                .beginTransaction()
-                .add(R.id.step_description_fragment, newStepDescriptionFragment)
-                .commit();
 
         //**************** Controls fragment****************//
 
@@ -100,7 +108,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
                 .add(R.id.controls_fragment, mControlsFragment)
                 .commit();
 
-        if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             descriptionFragmentContainer.setVisibility(View.GONE);
             controlsFragmentContainer.setVisibility(View.GONE);
         }
@@ -112,15 +120,9 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("mStepList", mStepList);
         outState.putInt("viewedStepPosition", viewedStepPosition);
-        outState.putString("videoUrl", videoUrl);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mStepList = savedInstanceState.getParcelableArrayList("mStepList");
-        viewedStepPosition = savedInstanceState.getInt("viewedStepPosition");
-        videoUrl = savedInstanceState.getString("videoUrl");
+        fragmentManager.putFragment(outState, "newPlayerFragment", newPlayerFragment);
+        fragmentManager.putFragment(outState, "newStepDescriptionFragment", newStepDescriptionFragment);
+        fragmentManager.putFragment(outState, "ControlsFragment", mControlsFragment);
     }
 
     @Override
@@ -164,7 +166,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         PlayerFragment newPlayerFragment = new PlayerFragment();
         newPlayerFragment.setStepVideoUrl(mStepList.get(viewedStepPosition)
                 .videoUrl);
-        getSupportFragmentManager()
+        fragmentManager
                 .beginTransaction()
                 .replace(R.id.exo_player_fragment, newPlayerFragment)
                 .commit();
@@ -175,7 +177,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
                 .get(viewedStepPosition)
                 .description);
 
-        getSupportFragmentManager()
+        fragmentManager
                 .beginTransaction()
                 .replace(R.id.step_description_fragment, newStepDescriptionFragment)
                 .commit();

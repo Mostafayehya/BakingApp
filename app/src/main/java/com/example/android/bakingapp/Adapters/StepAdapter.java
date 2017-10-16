@@ -1,7 +1,6 @@
 package com.example.android.bakingapp.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.android.bakingapp.DataModels.Step;
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.StepDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -28,6 +26,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     ArrayList<Step> mStepList;
     boolean isTwoPane = false;
 
+
+    RecyclerViewItemClickHandler recyclerViewItemClickHandler;
+
+    public interface RecyclerViewItemClickHandler {
+
+        void onRecyclerViewItemClicked(int position, ArrayList<Step> mStepList);
+    }
+
     public static final String CLICKED_POSITION_KEY = "clickedItemPosition";
     public static final String STEP_LIST_KEY = "stepsList";
 
@@ -36,6 +42,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         mStepList = stepList;
         mInflater = LayoutInflater.from(context);
         this.isTwoPane = isTwoPane;
+
+        try {
+            recyclerViewItemClickHandler = (RecyclerViewItemClickHandler) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement RecyclerViewItemClickHandler");
+        }
+
+
     }
 
     @Override
@@ -83,20 +97,10 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         @Override
         public void onClick(View view) {
-
             int adapterPosition = getAdapterPosition();
-
-            if (!isTwoPane) {
-                Intent toStartStepDetailActivity = new Intent(mContext, StepDetailsActivity.class);
-                toStartStepDetailActivity.putExtra(CLICKED_POSITION_KEY, adapterPosition);
-                toStartStepDetailActivity.putExtra(STEP_LIST_KEY, mStepList);
-                mContext.startActivity(toStartStepDetailActivity);
-            } else {
-                //send the data to the activity through the onClick callback of the onClickListner interface in the Recipe
-                //details activity
+            recyclerViewItemClickHandler.onRecyclerViewItemClicked(adapterPosition, mStepList);
 
 
-            }
         }
     }
 }

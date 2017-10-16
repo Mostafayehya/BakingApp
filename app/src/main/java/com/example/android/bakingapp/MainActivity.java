@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     RecipeAdapter recipeAdapter;
     public final String RECIPES_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     public static final String RECIPES_KEY = "recipes_key";
+    boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +48,34 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = this;
 
+        //Check if the device is a tablet or a phone
+        if (findViewById(R.id.tablet_main_layout) != null) {
+            mTwoPane = true;
+
+            //tablet Potrait case
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                recipesRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            }
+            //tablet landscape case
+            else {
+                recipesRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            }
+
+        } else {
+            mTwoPane = false;
+
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ||
+                    this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
+        }
+
 
         recipeAdapter = new RecipeAdapter(this);
 
         recipesRecyclerView.setHasFixedSize(true);
 
 
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ||
-                this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        }
         recipesRecyclerView.setAdapter(recipeAdapter);
 
         if (!isOnline()) {
