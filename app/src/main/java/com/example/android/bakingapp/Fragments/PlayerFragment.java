@@ -43,12 +43,25 @@ public class PlayerFragment extends Fragment {
 
     }
 
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        if (savedInstanceState != null) {
+            stepVideoUrl = savedInstanceState.getString("stepVideoUrl");
+            playWhenReady = savedInstanceState.getBoolean("playWhenReady");
+
+            //causes app to crash with no obvious reson
+//            playbackPosition= savedInstanceState.getLong("currentPosition",0);
+//            currentWindow = savedInstanceState.getInt("currentWindow");
+
+        }
         final View rootView = inflater.inflate(R.layout.fragment_exo_player, null);
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
 
         return rootView;
     }
@@ -56,18 +69,12 @@ public class PlayerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong("playBackPosition", mExoPlayer.getCurrentPosition());
-        outState.putInt("currentWindow", mExoPlayer.getCurrentWindowIndex());
-        outState.putBoolean("playWhenReady", mExoPlayer.getPlayWhenReady());
+        outState.putString("stepVideoUrl", stepVideoUrl);
+        outState.putBoolean("playWhenReady", playWhenReady);
+//        outState.putLong("currentWindow",mExoPlayer.getCurrentWindowIndex());
+//        outState.putLong("currentPosition",mExoPlayer.getCurrentPosition());
     }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        playbackPosition = savedInstanceState.getLong("playBackPosition");
-        currentWindow = savedInstanceState.getInt("currentWindow");
-        playWhenReady = savedInstanceState.getBoolean("playWhenReady");
-    }
 
     @Override
     public void onStart() {

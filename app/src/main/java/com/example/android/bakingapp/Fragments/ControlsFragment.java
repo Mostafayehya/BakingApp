@@ -27,7 +27,7 @@ public class ControlsFragment extends Fragment {
 
     OnControlsClickListener mCallBack;
 
-    interface OnControlsClickListener {
+    public interface OnControlsClickListener {
 
         void onNextButtonClicked();
 
@@ -55,7 +55,7 @@ public class ControlsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_controls, null);
-        ButterKnife.bind(rootView);
+        ButterKnife.bind(this,rootView);
 
 
         nextButton.setOnClickListener(new View.OnClickListener() {

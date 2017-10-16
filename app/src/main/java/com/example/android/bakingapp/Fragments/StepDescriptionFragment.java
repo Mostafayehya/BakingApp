@@ -21,7 +21,7 @@ public class StepDescriptionFragment extends Fragment {
 
     @BindView(R.id.step_description_text_view)
     TextView descriptionTextView;
-    String description="";
+    String description = "";
 
     public StepDescriptionFragment() {
 
@@ -29,7 +29,8 @@ public class StepDescriptionFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
 
         final View rootView = inflater.inflate(R.layout.fragment_step_description, null);
         ButterKnife.bind(this, rootView);
@@ -38,18 +39,9 @@ public class StepDescriptionFragment extends Fragment {
     }
 
     public void setDescription(String stepDescription) {
+        description = "";
         description = stepDescription;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("description" , description);
-    }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        description= savedInstanceState.getString("description","no text found !!");
-    }
 }
