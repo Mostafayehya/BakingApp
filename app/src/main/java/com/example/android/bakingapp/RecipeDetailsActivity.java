@@ -58,8 +58,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
         Intent intentStartedThisActivity = getIntent();
 
 
-
-        if (intentStartedThisActivity != null && savedInstanceState == null) {
+        if (intentStartedThisActivity != null) {
             if (intentStartedThisActivity.hasExtra("Steps")) {
                 receivedBundle = intentStartedThisActivity.getExtras();
                 mIngredientList = intentStartedThisActivity.getParcelableArrayListExtra("Ingredients");
@@ -96,12 +95,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
                 //handling steps with/without video
 
+                newPlayerFragment.setStepVideoUrl(videoUrl);
+                fragmentManager
+                        .beginTransaction()
+                        .add(R.id.exo_player_fragment, newPlayerFragment)
+                        .commit();
                 if (!videoUrl.equals("")) {
-                    newPlayerFragment.setStepVideoUrl(videoUrl);
-                    fragmentManager
-                            .beginTransaction()
-                            .add(R.id.exo_player_fragment, newPlayerFragment)
-                            .commit();
+                    exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
+
                 } else {
                     exoPlayerFragmentContainer.setVisibility(View.GONE);
                 }
@@ -132,9 +133,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 //                        getFragment(savedInstanceState, "recipeDetailsFragment");
 //            } else {
 
-                recipeDetailsFragment = new RecipeDetailsFragment();
-                recipeDetailsFragment.setArguments(receivedBundle);
-                getSupportFragmentManager().beginTransaction().add(R.id.master_list_fragment, recipeDetailsFragment).commit();
+            recipeDetailsFragment = new RecipeDetailsFragment();
+            recipeDetailsFragment.setArguments(receivedBundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.master_list_fragment, recipeDetailsFragment).commit();
 //            }
 
         }
@@ -148,7 +149,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
         outState.putParcelableArrayList("mIngredientList", mIngredientList);
         outState.putBoolean("mTwoPane", mTwoPane);
         outState.putInt("viewedStepPosition", viewedStepPosition);
-        outState.putString("videoUrl", videoUrl);
+        outState.putString("currentVideoUrl", videoUrl);
 //        if (recipeDetailsFragment != null)
 //            getSupportFragmentManager().putFragment(outState, "recipeDetailsFragment", recipeDetailsFragment);
         if (newPlayerFragment != null)
@@ -171,12 +172,12 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 //            //**************** player fragment****************//
 //
 //            newPlayerFragment = new PlayerFragment();
-//            videoUrl = mStepList.get(viewedStepPosition).videoUrl;
+//            currentVideoUrl = mStepList.get(viewedStepPosition).currentVideoUrl;
 //
 //            //handling steps with/without video
 //
-//            if (!videoUrl.equals("")) {
-//                newPlayerFragment.setStepVideoUrl(videoUrl);
+//            if (!currentVideoUrl.equals("")) {
+//                newPlayerFragment.setStepVideoUrl(currentVideoUrl);
 //                fragmentManager
 //                        .beginTransaction()
 //                        .replace(R.id.exo_player_fragment, newPlayerFragment)
@@ -225,12 +226,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
             //handling steps with/without video
 
+            newPlayerFragment.setStepVideoUrl(videoUrl);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.exo_player_fragment, newPlayerFragment)
+                    .commit();
             if (!videoUrl.equals("")) {
-                newPlayerFragment.setStepVideoUrl(videoUrl);
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.exo_player_fragment, newPlayerFragment)
-                        .commit();
+                exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
+
             } else {
                 exoPlayerFragmentContainer.setVisibility(View.GONE);
             }

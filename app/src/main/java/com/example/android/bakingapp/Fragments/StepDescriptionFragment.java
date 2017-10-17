@@ -27,19 +27,13 @@ public class StepDescriptionFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            description = savedInstanceState.getString("description");
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        if (savedInstanceState != null) {
+            description = savedInstanceState.getString("description");
+        }
         final View rootView = inflater.inflate(R.layout.fragment_step_description, null);
         ButterKnife.bind(this, rootView);
         descriptionTextView.setText(description);

@@ -28,7 +28,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
 
     ArrayList<Step> mStepList;
     int viewedStepPosition = 0;
-    String videoUrl = "";
+    String currentVideoUrl;
     String selectedStepDescription = "";
     PlayerFragment newPlayerFragment;
     StepDescriptionFragment newStepDescriptionFragment;
@@ -49,35 +49,40 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         ButterKnife.bind(this);
         Intent intentStartedThisActivity = getIntent();
 
-        if (intentStartedThisActivity.hasExtra(StepAdapter.STEP_LIST_KEY) && savedInstanceState == null) {
+        if (intentStartedThisActivity.hasExtra(StepAdapter.STEP_LIST_KEY)) {
             mStepList = intentStartedThisActivity
                     .getParcelableArrayListExtra(StepAdapter.STEP_LIST_KEY);
 
             viewedStepPosition = intentStartedThisActivity.
                     getIntExtra(StepAdapter.CLICKED_POSITION_KEY, 0);
 
+            currentVideoUrl = mStepList.get(viewedStepPosition).videoUrl;
+
         }
         if (savedInstanceState != null) {
             mStepList = savedInstanceState.getParcelableArrayList("mStepList");
             viewedStepPosition = savedInstanceState.getInt("viewedStepPosition");
+            currentVideoUrl = savedInstanceState.getString("currentVideoUrl");
             newPlayerFragment = (PlayerFragment) fragmentManager.getFragment(savedInstanceState, "newPlayerFragment");
             newStepDescriptionFragment = (StepDescriptionFragment) fragmentManager.getFragment(savedInstanceState, "newStepDescriptionFragment");
             mControlsFragment = (ControlsFragment) fragmentManager.getFragment(savedInstanceState, "mControlsFragment");
+
+
         } else {
 
             //**************** player fragment****************//
 
             newPlayerFragment = new PlayerFragment();
-            videoUrl = mStepList.get(viewedStepPosition).videoUrl;
 
             //handling steps with/without video
+            newPlayerFragment.setStepVideoUrl(currentVideoUrl);
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.exo_player_fragment, newPlayerFragment)
+                    .commit();
 
-            if (!videoUrl.equals("")) {
-                newPlayerFragment.setStepVideoUrl(videoUrl);
-                fragmentManager
-                        .beginTransaction()
-                        .add(R.id.exo_player_fragment, newPlayerFragment)
-                        .commit();
+            if (!currentVideoUrl.equals("")) {
+                exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
             } else {
                 exoPlayerFragmentContainer.setVisibility(View.GONE);
             }
@@ -95,22 +100,23 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
                     .add(R.id.step_description_fragment, newStepDescriptionFragment)
                     .commit();
 
+
         }
 
 
         //**************** Controls fragment****************//
 
-
         mControlsFragment = new ControlsFragment();
-
         fragmentManager
                 .beginTransaction()
                 .add(R.id.controls_fragment, mControlsFragment)
                 .commit();
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !currentVideoUrl.equals("")) {
             descriptionFragmentContainer.setVisibility(View.GONE);
             controlsFragmentContainer.setVisibility(View.GONE);
+        } else if (currentVideoUrl.equals("")) {
+            exoPlayerFragmentContainer.setVisibility(View.GONE);
         }
 
     }
@@ -120,6 +126,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("mStepList", mStepList);
         outState.putInt("viewedStepPosition", viewedStepPosition);
+        outState.putString("currentVideoUrl", currentVideoUrl);
         fragmentManager.putFragment(outState, "newPlayerFragment", newPlayerFragment);
         fragmentManager.putFragment(outState, "newStepDescriptionFragment", newStepDescriptionFragment);
         fragmentManager.putFragment(outState, "ControlsFragment", mControlsFragment);
@@ -133,18 +140,23 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
             --viewedStepPosition;
         }
 
-        PlayerFragment newPlayerFragment = new PlayerFragment();
-        newPlayerFragment.setStepVideoUrl(mStepList.get(viewedStepPosition)
-                .videoUrl);
+        newPlayerFragment = new PlayerFragment();
+        currentVideoUrl = mStepList.get(viewedStepPosition)
+                .videoUrl;
+        newPlayerFragment.setStepVideoUrl(currentVideoUrl);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.exo_player_fragment, newPlayerFragment)
                 .commit();
+        if (currentVideoUrl.equals("")) {
+            exoPlayerFragmentContainer.setVisibility(View.GONE);
+        } else {
+            exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
+        }
 
-        StepDescriptionFragment newStepDescriptionFragment = new StepDescriptionFragment();
-        newStepDescriptionFragment.setDescription(mStepList
-                .get(viewedStepPosition)
-                .description);
+        newStepDescriptionFragment = new StepDescriptionFragment();
+        selectedStepDescription = mStepList.get(viewedStepPosition).description;
+        newStepDescriptionFragment.setDescription(selectedStepDescription);
 
         fragmentManager
                 .beginTransaction()
@@ -163,19 +175,23 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
             ++viewedStepPosition;
         }
 
-        PlayerFragment newPlayerFragment = new PlayerFragment();
-        newPlayerFragment.setStepVideoUrl(mStepList.get(viewedStepPosition)
-                .videoUrl);
-        fragmentManager
+        newPlayerFragment = new PlayerFragment();
+        currentVideoUrl = mStepList.get(viewedStepPosition)
+                .videoUrl;
+        newPlayerFragment.setStepVideoUrl(currentVideoUrl);
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.exo_player_fragment, newPlayerFragment)
                 .commit();
+        if (currentVideoUrl.equals("")) {
+            exoPlayerFragmentContainer.setVisibility(View.GONE);
+        } else {
+            exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
+        }
 
-        StepDescriptionFragment newStepDescriptionFragment = new StepDescriptionFragment();
-
-        newStepDescriptionFragment.setDescription(mStepList
-                .get(viewedStepPosition)
-                .description);
+        newStepDescriptionFragment = new StepDescriptionFragment();
+        selectedStepDescription = mStepList.get(viewedStepPosition).description;
+        newStepDescriptionFragment.setDescription(selectedStepDescription);
 
         fragmentManager
                 .beginTransaction()

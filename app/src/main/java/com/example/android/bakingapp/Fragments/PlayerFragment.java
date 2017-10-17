@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class PlayerFragment extends Fragment {
 
-    boolean playWhenReady = true;
+    boolean playWhenReady;
     long playbackPosition = 0;
     int currentWindow;
     @BindView(R.id.player_view)
@@ -43,27 +43,17 @@ public class PlayerFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            stepVideoUrl = savedInstanceState.getString("stepVideoUrl");
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-//        if (savedInstanceState != null) {
-//            stepVideoUrl = savedInstanceState.getString("stepVideoUrl");
-//            playWhenReady = savedInstanceState.getBoolean("playWhenReady");
+        if (savedInstanceState != null) {
+            stepVideoUrl = savedInstanceState.getString("stepVideoUrl");
+            playbackPosition = savedInstanceState.getLong("playbackPosition");
+            currentWindow = savedInstanceState.getInt("currentWindow");
+            playWhenReady = savedInstanceState.getBoolean("playWhenReady");
+        }
 
-        //causes app to crash with no obvious reson
-//            playbackPosition= savedInstanceState.getLong("currentPosition",0);
-//            currentWindow = savedInstanceState.getInt("currentWindow");
-
-//        }
         final View rootView = inflater.inflate(R.layout.fragment_exo_player, null);
         ButterKnife.bind(this, rootView);
         if (Util.SDK_INT > 23) {
@@ -77,18 +67,11 @@ public class PlayerFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("stepVideoUrl", stepVideoUrl);
+        releasePlayer();
+        outState.putLong("playbackPosition", playbackPosition);
+        outState.putInt("currentWindow", currentWindow);
+        outState.putBoolean("playWhenReady", playWhenReady);
     }
-
-
-    //    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putString("stepVideoUrl", stepVideoUrl);
-//        outState.putBoolean("playWhenReady", playWhenReady);
-//        outState.putLong("currentWindow",mExoPlayer.getCurrentWindowIndex());
-//        outState.putLong("currentPosition",mExoPlayer.getCurrentPosition());
-//    }
-
 
     @Override
     public void onStart() {

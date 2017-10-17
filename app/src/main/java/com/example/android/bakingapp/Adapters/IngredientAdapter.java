@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
     Context mContext;
-    ArrayList<Ingredient> mIngredientList;
+    ArrayList<Ingredient> mIngredientList = new ArrayList<>();
     LayoutInflater mInflater;
 
     public IngredientAdapter(Context context, ArrayList<Ingredient> ingredients) {
