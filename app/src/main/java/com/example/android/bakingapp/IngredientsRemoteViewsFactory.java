@@ -67,12 +67,12 @@ public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteV
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     public static void setIngredientList(ArrayList<Ingredient> ingredientList) {
