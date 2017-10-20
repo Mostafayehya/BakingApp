@@ -48,6 +48,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
     StepDescriptionFragment newStepDescriptionFragment;
     PlayerFragment newPlayerFragment;
 
+
     boolean mTwoPane;
 
     @Override

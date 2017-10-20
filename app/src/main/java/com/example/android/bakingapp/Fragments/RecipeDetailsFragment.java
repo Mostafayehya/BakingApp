@@ -1,5 +1,7 @@
 package com.example.android.bakingapp.Fragments;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.bakingapp.Adapters.IngredientAdapter;
 import com.example.android.bakingapp.Adapters.StepAdapter;
 import com.example.android.bakingapp.DataModels.Ingredient;
 import com.example.android.bakingapp.DataModels.Step;
+import com.example.android.bakingapp.IngredientsRemoteViewsFactory;
+import com.example.android.bakingapp.IngredientsWidgetProvider;
 import com.example.android.bakingapp.R;
 
 import java.util.ArrayList;
@@ -35,10 +41,12 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
     TextView steps;
     @BindView(R.id.steps_recycler_view)
     RecyclerView stepsRecyclerView;
-
-    ArrayList<Ingredient> mIngredientList;
+    @BindView(R.id.mark_as_favourite)
+    ImageView isFavouriteImageView;
+    static ArrayList<Ingredient> mIngredientList;
     ArrayList<Step> mStepList;
     boolean mTwoPane;
+    boolean isRecipeFavorite = false;
     StepClickHandler stepClickHandler;
     Bundle arguements;
 
@@ -47,17 +55,6 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
 
         void onStepClicked(int stepPosition, ArrayList<Step> mStepList);
     }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//
-//        try {
-//            stepClickHandler = (StepClickHandler) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + "must implement StepClickHandler");
-//        }
-//    }
 
     public RecipeDetailsFragment() {
     }
@@ -70,6 +67,7 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
             mTwoPane = savedInstanceState.getBoolean("mTwoPane");
             mStepList = savedInstanceState.getParcelableArrayList("mStepList");
             mIngredientList = savedInstanceState.getParcelableArrayList("mIngredientList");
+            isRecipeFavorite = savedInstanceState.getBoolean("isRecipeFavorite");
         }
 
     }
@@ -103,6 +101,34 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
         StepAdapter stepAdapter = new StepAdapter(getActivity(), mStepList, true);
         stepsRecyclerView.setAdapter(stepAdapter);
 
+        isFavouriteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isRecipeFavorite) {
+                    isRecipeFavorite = true;
+                    isFavouriteImageView.setImageResource(R.drawable.loved_recipe);
+                    Toast.makeText(getContext(), "Ingredients  added to widget ", Toast.LENGTH_SHORT).
+                            show();
+                    IngredientsRemoteViewsFactory.setIngredientList(mIngredientList);
+                    AppWidgetManager widgetManager = AppWidgetManager.getInstance(getContext());
+                    int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(getContext(), IngredientsWidgetProvider.class));
+
+                    widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.appwidget_list_view);
+                } else {
+                    isRecipeFavorite = false;
+                    isFavouriteImageView.setImageResource(R.drawable.not_loved_recipe);
+                    Toast.makeText(getContext(), "Ingredients removed from widget ", Toast.LENGTH_SHORT).
+                            show();
+                    IngredientsRemoteViewsFactory.setDefaultIngredientList();
+
+                    AppWidgetManager widgetManager = AppWidgetManager.getInstance(getContext());
+                    int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(getContext(), IngredientsWidgetProvider.class));
+
+                    widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.appwidget_list_view);
+                }
+            }
+        });
+
 
         return rootView;
     }
@@ -114,6 +140,7 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
         outState.putParcelableArrayList("mIngredientList", mIngredientList);
         outState.putParcelableArrayList("mStepList", mStepList);
         outState.putBoolean("mTwoPane", mTwoPane);
+        outState.putBoolean("isRecipeFavorite", isRecipeFavorite);
 
     }
 

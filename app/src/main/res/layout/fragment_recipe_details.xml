@@ -10,6 +10,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/mark_as_favourite"
+            android:layout_height="60dp"
+            android:layout_width="60dp"
+            android:padding="10dp"
+            android:src="@drawable/not_loved_recipe"
+            android:layout_gravity="center_horizontal">
+
+        </ImageView>
+
+
         <TextView
             android:id="@+id/ingredient_title"
             android:layout_width="match_parent"
@@ -25,10 +36,6 @@
             android:id="@+id/ingredients_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginEnd="30dp"
             android:layout_marginTop="15dp">
 
         </android.support.v7.widget.RecyclerView>
@@ -49,8 +56,6 @@
             android:id="@+id/steps_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:layout_marginStart="15dp"
             android:layout_marginTop="15dp">
 
         </android.support.v7.widget.RecyclerView>
