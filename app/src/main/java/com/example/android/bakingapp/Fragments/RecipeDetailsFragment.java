@@ -1,7 +1,5 @@
 package com.example.android.bakingapp.Fragments;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +48,8 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
     boolean isRecipeFavorite = false;
     StepClickHandler stepClickHandler;
     Bundle arguements;
+
+    public static String INGREDIENT_LIST_KEY = "mIngredientList";
 
 
     public interface StepClickHandler {
@@ -112,9 +112,10 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
                             show();
 
 
-                    Intent messageToWidgeProvider = new Intent(IngredientsWidgetProvider.SEND_DATA_TO_PROVIDER_ACTION);
-                    messageToWidgeProvider.putParcelableArrayListExtra("mIngredientList",mIngredientList);
-                    sendBroadcast(messageToWidgeProvider);
+                    Intent messageToWidgeProvider = new Intent(getContext(), IngredientsWidgetProvider.class);
+                    messageToWidgeProvider.setAction(IngredientsWidgetProvider.SEND_DATA_TO_PROVIDER_ACTION);
+                    messageToWidgeProvider.putParcelableArrayListExtra(INGREDIENT_LIST_KEY, mIngredientList);
+                    getContext().sendBroadcast(messageToWidgeProvider);
 
                 } else {
                     isRecipeFavorite = false;
@@ -123,10 +124,6 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
                             show();
                     IngredientsRemoteViewsFactory.setDefaultIngredientList();
 
-                    AppWidgetManager widgetManager = AppWidgetManager.getInstance(getContext());
-                    int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(getContext(), IngredientsWidgetProvider.class));
-
-                    widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.appwidget_list_view);
                 }
             }
         });

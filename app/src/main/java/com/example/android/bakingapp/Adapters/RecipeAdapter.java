@@ -99,8 +99,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     public void setRecipeArrayList(ArrayList<Recipe> list) {
-        mRecipeList.clear();
-        mRecipeList.addAll(list);
+        mRecipeList = list;
         notifyDataSetChanged();
 
     }
