@@ -2,6 +2,7 @@ package com.example.android.bakingapp.Fragments;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -109,11 +110,12 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
                     isFavouriteImageView.setImageResource(R.drawable.loved_recipe);
                     Toast.makeText(getContext(), "Ingredients  added to widget ", Toast.LENGTH_SHORT).
                             show();
-                    IngredientsRemoteViewsFactory.setIngredientList(mIngredientList);
-                    AppWidgetManager widgetManager = AppWidgetManager.getInstance(getContext());
-                    int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(getContext(), IngredientsWidgetProvider.class));
 
-                    widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.appwidget_list_view);
+
+                    Intent messageToWidgeProvider = new Intent(IngredientsWidgetProvider.SEND_DATA_TO_PROVIDER_ACTION);
+                    messageToWidgeProvider.putParcelableArrayListExtra("mIngredientList",mIngredientList);
+                    sendBroadcast(messageToWidgeProvider);
+
                 } else {
                     isRecipeFavorite = false;
                     isFavouriteImageView.setImageResource(R.drawable.not_loved_recipe);

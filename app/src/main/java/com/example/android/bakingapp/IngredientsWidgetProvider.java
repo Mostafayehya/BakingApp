@@ -1,5 +1,6 @@
 package com.example.android.bakingapp;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.widget.RemoteViews;
  */
 public class IngredientsWidgetProvider extends AppWidgetProvider {
 
+    public static String SEND_DATA_TO_PROVIDER_ACTION ="com.example.android.IngredientsWidgetProvider.SEND_DATA_TO_PROVIDER_ACTION";
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
@@ -20,17 +23,15 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
         views.setOnClickPendingIntent(R.id.appwidget_list_view,pendingIntent);*/
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_provider);
-
-//        Intent intent = new Intent(context, MainActivity.class);
-//
-//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-//
-//        views.setOnClickPendingIntent(R.layout.widget_list_item, pendingIntent);
-
         Intent remoteViewsServiceIntent = new Intent(context, IngredietnsRemoteViewsService.class);
-
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_provider);
         views.setRemoteAdapter(R.id.appwidget_list_view, remoteViewsServiceIntent);
+
+
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.layout.widget_list_item, pendingIntent);
+
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
