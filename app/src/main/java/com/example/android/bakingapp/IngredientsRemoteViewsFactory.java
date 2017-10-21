@@ -15,10 +15,14 @@ import java.util.ArrayList;
 public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
-    public static ArrayList<Ingredient> mList = new ArrayList<>();
+    public static ArrayList<Ingredient> mList;
 
     public IngredientsRemoteViewsFactory(Context appContext) {
         mContext = appContext;
+        Ingredient defaultIngredient = new Ingredient(0,"default measurement","default ingredient name");
+        mList = new ArrayList<>();
+        mList.add(defaultIngredient);
+
     }
 
     @Override

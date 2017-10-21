@@ -117,6 +117,7 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
                     messageToWidgeProvider.putParcelableArrayListExtra(INGREDIENT_LIST_KEY, mIngredientList);
                     getContext().sendBroadcast(messageToWidgeProvider);
 
+
                 } else {
                     isRecipeFavorite = false;
                     isFavouriteImageView.setImageResource(R.drawable.not_loved_recipe);
