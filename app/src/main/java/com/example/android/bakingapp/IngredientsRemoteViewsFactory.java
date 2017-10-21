@@ -15,14 +15,10 @@ import java.util.ArrayList;
 public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
-    public static ArrayList<Ingredient> mList;
+    public static ArrayList<Ingredient> mList = new ArrayList<>();
 
     public IngredientsRemoteViewsFactory(Context appContext) {
         mContext = appContext;
-        mList = new ArrayList<>();
-        mList.get(0).name = "name holder";
-        mList.get(0).quantity = 20;
-        mList.get(0).measurment = "TSP";
     }
 
     @Override
@@ -42,7 +38,12 @@ public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteV
 
     @Override
     public int getCount() {
-        return mList.size();
+        if (mList.size() > 0) {
+            return mList.size();
+        } else {
+            return 1;
+        }
+
     }
 
     @Override

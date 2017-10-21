@@ -3,7 +3,7 @@
     android:initialKeyguardLayout="@layout/ingredients_widget_provider"
     android:initialLayout="@layout/ingredients_widget_provider"
     android:minHeight="60dp"
-    android:minWidth="60dp"
+    android:minWidth="100dp"
     android:previewImage="@drawable/loved_recipe"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
