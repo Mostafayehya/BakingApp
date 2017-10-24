@@ -31,7 +31,7 @@ public class OpenRecipeJsonUtils {
     static final String SHORT_DESCRIPTION = "shortDescription";
     static final String DESCRIPTION = "description";
     static final String VIDEO_URL = "videoURL";
-    static final String RECIPE_IMAGE_URL = "recipeImageURL";
+    static final String RECIPE_IMAGE_URL = "image";
 
     static final String THUMBNAIL_URL = "thumbnailURL";
 

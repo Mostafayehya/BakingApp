@@ -161,56 +161,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
     }
 
-//    @Override
-//    public void onStepClicked(int stepPosition, ArrayList<Step> mStepList) {
-//
-//        if (mTwoPane) {
-//
-//            viewedStepPosition = stepPosition;
-//            this.mStepList = mStepList;
-//
-//            fragmentManager = getSupportFragmentManager();
-//
-//            //**************** player fragment****************//
-//
-//            newPlayerFragment = new PlayerFragment();
-//            currentVideoUrl = mStepList.get(viewedStepPosition).currentVideoUrl;
-//
-//            //handling steps with/without video
-//
-//            if (!currentVideoUrl.equals("")) {
-//                newPlayerFragment.setStepVideoUrl(currentVideoUrl);
-//                fragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.exo_player_fragment, newPlayerFragment)
-//                        .commit();
-//            } else {
-//                exoPlayerFragmentContainer.setVisibility(View.GONE);
-//            }
-//
-//            //**************** Description fragment****************//
-//
-//            newStepDescriptionFragment = new StepDescriptionFragment();
-//            selectedStepDescription =
-//                    mStepList.get(viewedStepPosition).description;
-//
-//            newStepDescriptionFragment.setDescription(selectedStepDescription);
-//
-//            fragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.step_description_fragment, newStepDescriptionFragment)
-//                    .commit();
-//
-//        } else {
-//            Intent toStartStepDetailActivity = new Intent(this, StepDetailsActivity.class);
-//            toStartStepDetailActivity.putExtra(CLICKED_POSITION_KEY, stepPosition);
-//            toStartStepDetailActivity.putExtra(STEP_LIST_KEY, mStepList);
-//            startActivity(toStartStepDetailActivity);
-//        }
-//
-//
-//    }
-
     @Override
     public void onRecyclerViewItemClicked(int position, ArrayList<Step> mStepList) {
 

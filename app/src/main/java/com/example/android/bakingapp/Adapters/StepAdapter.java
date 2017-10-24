@@ -23,7 +23,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     Context mContext;
     LayoutInflater mInflater;
-    ArrayList<Step> mStepList;
+    ArrayList<Step> mStepList = new ArrayList<>();
     boolean isTwoPane = false;
 
 
