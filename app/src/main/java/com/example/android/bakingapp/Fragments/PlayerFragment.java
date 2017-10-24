@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.android.bakingapp.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +38,11 @@ public class PlayerFragment extends Fragment {
     int currentWindow;
     @BindView(R.id.player_view)
     SimpleExoPlayerView mExoPlayerView;
+    @BindView(R.id.exo_fragment_image_view)
+    ImageView stepImageView;
     SimpleExoPlayer mExoPlayer;
     String stepVideoUrl;
+    String thumbnailUrl;
 
     public PlayerFragment() {
 
@@ -52,10 +57,19 @@ public class PlayerFragment extends Fragment {
             playbackPosition = savedInstanceState.getLong("playbackPosition");
             currentWindow = savedInstanceState.getInt("currentWindow");
             playWhenReady = savedInstanceState.getBoolean("playWhenReady");
+            thumbnailUrl = savedInstanceState.getString("thumbnailUrl");
         }
 
         final View rootView = inflater.inflate(R.layout.fragment_exo_player, null);
         ButterKnife.bind(this, rootView);
+
+        if (!thumbnailUrl.equals("")) {
+            stepImageView.setVisibility(View.VISIBLE);
+            Picasso.with(getContext()).load(thumbnailUrl).into(stepImageView);
+        } else {
+            stepImageView.setVisibility(View.GONE);
+        }
+
         if (Util.SDK_INT > 23) {
             initializePlayer();
         }
@@ -67,6 +81,7 @@ public class PlayerFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("stepVideoUrl", stepVideoUrl);
+        outState.putString("thumbnailUrl", thumbnailUrl);
         releasePlayer();
         outState.putLong("playbackPosition", playbackPosition);
         outState.putInt("currentWindow", currentWindow);
@@ -153,5 +168,9 @@ public class PlayerFragment extends Fragment {
 
     public void setStepVideoUrl(String url) {
         stepVideoUrl = url;
+    }
+
+    public void setThumbnailUrl(String url) {
+        thumbnailUrl = url;
     }
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.DataModels.Ingredient;
@@ -13,6 +14,7 @@ import com.example.android.bakingapp.DataModels.Recipe;
 import com.example.android.bakingapp.DataModels.Step;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.RecipeDetailsActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,6 +52,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         String servingsNumber = "Servings: " + Integer.toString(mRecipeList.get(position).servings);
         String stepsNumber = "Steps: " + Integer.toString(mRecipeList.get(position).stepsList.size());
 
+        if (!mRecipeList.get(position).imagUrl.equals("")) {
+            holder.mRecipeImage.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(mRecipeList.get(position).imagUrl).into(holder.mRecipeImage);
+        }
         holder.mTextViewRecipeName.setText(recipeName);
         holder.mTextViewServings.setText(servingsNumber);
         holder.mTextViewStepsNumber.setText(stepsNumber);
@@ -64,12 +70,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        ImageView mRecipeImage;
         TextView mTextViewRecipeName;
         TextView mTextViewServings;
         TextView mTextViewStepsNumber;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
+            mRecipeImage = (ImageView) itemView.findViewById(R.id.recipe_image);
             mTextViewRecipeName = (TextView) itemView.findViewById(R.id.recipe_name);
             mTextViewServings = (TextView) itemView.findViewById(R.id.servings);
             mTextViewStepsNumber = (TextView) itemView.findViewById(R.id.steps);

@@ -47,6 +47,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
     RecipeDetailsFragment recipeDetailsFragment;
     StepDescriptionFragment newStepDescriptionFragment;
     PlayerFragment newPlayerFragment;
+    String thumbnailUrl;
 
 
     boolean mTwoPane;
@@ -82,7 +83,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
                     newStepDescriptionFragment = (StepDescriptionFragment) getSupportFragmentManager()
                             .getFragment(savedInstanceState, "newStepDescriptionFragment");
-                }catch(Exception ex){}
+                } catch (Exception ex) {
+                }
             } else {
 
 
@@ -96,6 +98,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
                 newPlayerFragment = new PlayerFragment();
                 videoUrl = mStepList.get(viewedStepPosition).videoUrl;
+                thumbnailUrl = mStepList.get(viewedStepPosition).thumbnailUrl;
 
                 //handling steps with/without video
 
@@ -131,23 +134,18 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
             mTwoPane = false;
 
-//            if (savedInstanceState != null) {
-//
-//                recipeDetailsFragment = (RecipeDetailsFragment) getSupportFragmentManager().
-//                        getFragment(savedInstanceState, "recipeDetailsFragment");
-//            } else {
-
-            recipeDetailsFragment = new RecipeDetailsFragment();
-            recipeDetailsFragment.setArguments(receivedBundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.master_list_fragment, recipeDetailsFragment).commit();
-//            }
+            if (savedInstanceState == null) {
+                recipeDetailsFragment = new RecipeDetailsFragment();
+                recipeDetailsFragment.setArguments(receivedBundle);
+                getSupportFragmentManager().beginTransaction().add(R.id.master_list_fragment, recipeDetailsFragment).commit();
+            }
 
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
+        super.onSaveInstanceState(outState);
         outState.putBundle("receivedBundle", receivedBundle);
         outState.putParcelableArrayList("mStepList", mStepList);
         outState.putParcelableArrayList("mIngredientList", mIngredientList);
@@ -231,16 +229,18 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
             //handling steps with/without video
 
             newPlayerFragment.setStepVideoUrl(videoUrl);
+            newPlayerFragment.setThumbnailUrl(thumbnailUrl);
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.exo_player_fragment, newPlayerFragment)
                     .commit();
-            if (!videoUrl.equals("")) {
+            if (!videoUrl.equals("") || !thumbnailUrl.equals("")) {
                 exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
 
             } else {
                 exoPlayerFragmentContainer.setVisibility(View.GONE);
             }
+
 
             //**************** Description fragment****************//
 

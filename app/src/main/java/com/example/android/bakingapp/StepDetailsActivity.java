@@ -29,6 +29,7 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
     ArrayList<Step> mStepList;
     int viewedStepPosition = 0;
     String currentVideoUrl;
+    String currentVideoThumbnail;
     String selectedStepDescription = "";
     PlayerFragment newPlayerFragment;
     StepDescriptionFragment newStepDescriptionFragment;
@@ -57,12 +58,14 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
                     getIntExtra(StepAdapter.CLICKED_POSITION_KEY, 0);
 
             currentVideoUrl = mStepList.get(viewedStepPosition).videoUrl;
+            currentVideoThumbnail = mStepList.get(viewedStepPosition).thumbnailUrl;
 
         }
         if (savedInstanceState != null) {
             mStepList = savedInstanceState.getParcelableArrayList("mStepList");
             viewedStepPosition = savedInstanceState.getInt("viewedStepPosition");
             currentVideoUrl = savedInstanceState.getString("currentVideoUrl");
+            currentVideoThumbnail = savedInstanceState.getString("currentVideoThumbnail");
             newPlayerFragment = (PlayerFragment) fragmentManager.getFragment(savedInstanceState, "newPlayerFragment");
             newStepDescriptionFragment = (StepDescriptionFragment) fragmentManager.getFragment(savedInstanceState, "newStepDescriptionFragment");
             mControlsFragment = (ControlsFragment) fragmentManager.getFragment(savedInstanceState, "mControlsFragment");
@@ -76,12 +79,13 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
 
             //handling steps with/without video
             newPlayerFragment.setStepVideoUrl(currentVideoUrl);
+            newPlayerFragment.setThumbnailUrl(currentVideoThumbnail);
             fragmentManager
                     .beginTransaction()
                     .add(R.id.exo_player_fragment, newPlayerFragment)
                     .commit();
 
-            if (!currentVideoUrl.equals("")) {
+            if (!currentVideoUrl.equals("") || !currentVideoThumbnail.equals("")) {
                 exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
             } else {
                 exoPlayerFragmentContainer.setVisibility(View.GONE);
@@ -127,6 +131,8 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         outState.putParcelableArrayList("mStepList", mStepList);
         outState.putInt("viewedStepPosition", viewedStepPosition);
         outState.putString("currentVideoUrl", currentVideoUrl);
+        outState.putString("currentVideoThumbnail", currentVideoThumbnail);
+
         fragmentManager.putFragment(outState, "newPlayerFragment", newPlayerFragment);
         fragmentManager.putFragment(outState, "newStepDescriptionFragment", newStepDescriptionFragment);
         fragmentManager.putFragment(outState, "ControlsFragment", mControlsFragment);
@@ -143,7 +149,9 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         newPlayerFragment = new PlayerFragment();
         currentVideoUrl = mStepList.get(viewedStepPosition)
                 .videoUrl;
+        currentVideoThumbnail =mStepList.get(viewedStepPosition).thumbnailUrl;
         newPlayerFragment.setStepVideoUrl(currentVideoUrl);
+        newPlayerFragment.setThumbnailUrl(currentVideoThumbnail);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.exo_player_fragment, newPlayerFragment)
@@ -178,7 +186,9 @@ public class StepDetailsActivity extends AppCompatActivity implements ControlsFr
         newPlayerFragment = new PlayerFragment();
         currentVideoUrl = mStepList.get(viewedStepPosition)
                 .videoUrl;
+        currentVideoThumbnail=mStepList.get(viewedStepPosition).thumbnailUrl;
         newPlayerFragment.setStepVideoUrl(currentVideoUrl);
+        newPlayerFragment.setThumbnailUrl(currentVideoThumbnail);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.exo_player_fragment, newPlayerFragment)

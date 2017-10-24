@@ -31,6 +31,8 @@ public class OpenRecipeJsonUtils {
     static final String SHORT_DESCRIPTION = "shortDescription";
     static final String DESCRIPTION = "description";
     static final String VIDEO_URL = "videoURL";
+    static final String RECIPE_IMAGE_URL = "recipeImageURL";
+
     static final String THUMBNAIL_URL = "thumbnailURL";
 
     static final String SERVINGS = "servings";
@@ -78,6 +80,7 @@ public class OpenRecipeJsonUtils {
             }
 
             currentRecipeObject.servings = currentRecipeJsonObject.getInt(SERVINGS);
+            currentRecipeObject.imagUrl = currentRecipeJsonObject.getString(RECIPE_IMAGE_URL);
 
             parsedRecipes.add(currentRecipeObject);
 
