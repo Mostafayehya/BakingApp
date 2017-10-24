@@ -26,21 +26,22 @@
             android:name=".StepDetailsActivity"
             android:label="@string/step_details_activity_name" />
 
-        <receiver android:name=".IngredientsWidgetProvider">
+        <receiver android:name=".RecipeWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/ingredients_widget_provider_info" />
+                android:resource="@xml/recipe_widget_info" />
         </receiver>
 
-        <service
-            android:name="com.example.android.bakingapp.IngredietnsRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS">
 
-        </service>
+        --Services--
+        <service
+            android:name=".RecipeWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

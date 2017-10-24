@@ -1,6 +1,5 @@
 package com.example.android.bakingapp.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,10 +15,10 @@ import android.widget.Toast;
 import com.example.android.bakingapp.Adapters.IngredientAdapter;
 import com.example.android.bakingapp.Adapters.StepAdapter;
 import com.example.android.bakingapp.DataModels.Ingredient;
+import com.example.android.bakingapp.DataModels.Recipe;
 import com.example.android.bakingapp.DataModels.Step;
-import com.example.android.bakingapp.IngredientsRemoteViewsFactory;
-import com.example.android.bakingapp.IngredientsWidgetProvider;
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utilities.MySharedPref;
 
 import java.util.ArrayList;
 
@@ -112,10 +111,15 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
                             show();
 
 
-                    Intent messageToWidgeProvider = new Intent(getContext(), IngredientsWidgetProvider.class);
-                    messageToWidgeProvider.setAction(IngredientsWidgetProvider.SEND_DATA_TO_PROVIDER_ACTION);
+                   /* Intent messageToWidgeProvider = new Intent(getContext(), RecipeAppWidget.class);
+                    messageToWidgeProvider.setAction(RecipeAppWidget.SEND_DATA_TO_PROVIDER_ACTION);
                     messageToWidgeProvider.putParcelableArrayListExtra(INGREDIENT_LIST_KEY, mIngredientList);
-                    getContext().sendBroadcast(messageToWidgeProvider);
+                    getContext().sendBroadcast(messageToWidgeProvider);*/
+
+                    MySharedPref.setUpMySharedPreferences(getContext(),"widget");
+                    Recipe recipe=new Recipe();
+                    recipe.ingredientList=mIngredientList;
+                    MySharedPref.SaveLastRecipe(recipe);
 
 
                 } else {
@@ -123,7 +127,7 @@ public class RecipeDetailsFragment extends Fragment implements StepAdapter.Recyc
                     isFavouriteImageView.setImageResource(R.drawable.not_loved_recipe);
                     Toast.makeText(getContext(), "Ingredients removed from widget ", Toast.LENGTH_SHORT).
                             show();
-                    IngredientsRemoteViewsFactory.setDefaultIngredientList();
+                    /*IngredientsRemoteViewsFactory.setDefaultIngredientList();*/
 
                 }
             }

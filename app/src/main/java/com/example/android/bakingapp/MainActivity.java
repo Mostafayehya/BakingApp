@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.android.bakingapp.Adapters.RecipeAdapter;
 import com.example.android.bakingapp.DataModels.Recipe;
+import com.example.android.bakingapp.Utilities.MySharedPref;
 import com.example.android.bakingapp.Utilities.NetworkUtils;
 import com.example.android.bakingapp.Utilities.OpenRecipeJsonUtils;
 
@@ -169,6 +170,12 @@ public class MainActivity extends AppCompatActivity {
                 showRecipesDataView();
                 mRecipeList = r;
                 recipeAdapter.setRecipeArrayList(mRecipeList);
+
+                if (mRecipeList.size() >= 0) {
+                    MySharedPref.setUpMySharedPreferences(getApplicationContext(), "widget");
+                    MySharedPref.SaveLastRecipe(mRecipeList.get(0));
+                }
+
 
             }
             super.onPostExecute(r);

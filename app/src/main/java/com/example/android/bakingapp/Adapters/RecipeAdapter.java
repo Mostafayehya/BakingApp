@@ -70,9 +70,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            mTextViewRecipeName = itemView.findViewById(R.id.recipe_name);
-            mTextViewServings = itemView.findViewById(R.id.servings);
-            mTextViewStepsNumber = itemView.findViewById(R.id.steps);
+            mTextViewRecipeName = (TextView) itemView.findViewById(R.id.recipe_name);
+            mTextViewServings = (TextView) itemView.findViewById(R.id.servings);
+            mTextViewStepsNumber = (TextView) itemView.findViewById(R.id.steps);
             itemView.setOnClickListener(this);
 
         }

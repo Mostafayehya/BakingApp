@@ -77,9 +77,12 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
                 viewedStepPosition = savedInstanceState.getInt("viewedStepPosition");
                 mStepList = savedInstanceState.getParcelableArrayList("mStepList");
                 mIngredientList = savedInstanceState.getParcelableArrayList("mIngredientList");
-                newPlayerFragment = (PlayerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "newPlayerFragment");
-                newStepDescriptionFragment = (StepDescriptionFragment) getSupportFragmentManager()
-                        .getFragment(savedInstanceState, "newStepDescriptionFragment");
+                try {
+                    newPlayerFragment = (PlayerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "newPlayerFragment");
+
+                    newStepDescriptionFragment = (StepDescriptionFragment) getSupportFragmentManager()
+                            .getFragment(savedInstanceState, "newStepDescriptionFragment");
+                }catch(Exception ex){}
             } else {
 
 

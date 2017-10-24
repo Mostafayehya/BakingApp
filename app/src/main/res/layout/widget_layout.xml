@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:contextClickable="true"
+    android:background="@android:color/holo_blue_dark">
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@android:color/holo_blue_dark"
+        android:contentDescription="@string/appwidget_text"
+        android:text="@string/appwidget_text"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        android:clickable="true"
+        android:contextClickable="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ingredients_listView_widget"/>
+
+
+    <!--android:background="#09C"-->
+
+</LinearLayout>
