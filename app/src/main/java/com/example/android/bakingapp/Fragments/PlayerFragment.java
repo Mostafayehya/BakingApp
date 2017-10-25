@@ -41,8 +41,8 @@ public class PlayerFragment extends Fragment {
     @BindView(R.id.exo_fragment_image_view)
     ImageView stepImageView;
     SimpleExoPlayer mExoPlayer;
-    String stepVideoUrl;
-    String thumbnailUrl;
+    String stepVideoUrl="";
+    String thumbnailUrl="";
 
     public PlayerFragment() {
 

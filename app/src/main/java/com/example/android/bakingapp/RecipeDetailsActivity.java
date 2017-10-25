@@ -35,7 +35,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
     ArrayList<Step> mStepList;
     int viewedStepPosition = 0;
-    String videoUrl = "";
     String selectedStepDescription = "";
     FragmentManager fragmentManager;
     @BindView(R.id.exo_player_fragment)
@@ -47,7 +46,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
     RecipeDetailsFragment recipeDetailsFragment;
     StepDescriptionFragment newStepDescriptionFragment;
     PlayerFragment newPlayerFragment;
-    String thumbnailUrl;
+    String videoUrl = "";
+    String thumbnailUrl = "";
 
 
     boolean mTwoPane;
@@ -78,13 +78,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
                 viewedStepPosition = savedInstanceState.getInt("viewedStepPosition");
                 mStepList = savedInstanceState.getParcelableArrayList("mStepList");
                 mIngredientList = savedInstanceState.getParcelableArrayList("mIngredientList");
-                try {
-                    newPlayerFragment = (PlayerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "newPlayerFragment");
 
-                    newStepDescriptionFragment = (StepDescriptionFragment) getSupportFragmentManager()
-                            .getFragment(savedInstanceState, "newStepDescriptionFragment");
-                } catch (Exception ex) {
-                }
+                newPlayerFragment = (PlayerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "newPlayerFragment");
+                newStepDescriptionFragment = (StepDescriptionFragment) getSupportFragmentManager()
+                        .getFragment(savedInstanceState, "newStepDescriptionFragment");
+
             } else {
 
 
@@ -97,17 +95,19 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
                 //**************** player fragment****************//
 
                 newPlayerFragment = new PlayerFragment();
+
                 videoUrl = mStepList.get(viewedStepPosition).videoUrl;
                 thumbnailUrl = mStepList.get(viewedStepPosition).thumbnailUrl;
 
                 //handling steps with/without video
 
                 newPlayerFragment.setStepVideoUrl(videoUrl);
+                newPlayerFragment.setThumbnailUrl(thumbnailUrl);
                 fragmentManager
                         .beginTransaction()
                         .add(R.id.exo_player_fragment, newPlayerFragment)
                         .commit();
-                if (!videoUrl.equals("")) {
+                if (!videoUrl.equals("") || !thumbnailUrl.equals("")) {
                     exoPlayerFragmentContainer.setVisibility(View.VISIBLE);
 
                 } else {
@@ -152,6 +152,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
         outState.putBoolean("mTwoPane", mTwoPane);
         outState.putInt("viewedStepPosition", viewedStepPosition);
         outState.putString("currentVideoUrl", videoUrl);
+        outState.putString("thumbnailUrl", thumbnailUrl);
 //        if (recipeDetailsFragment != null)
 //            getSupportFragmentManager().putFragment(outState, "recipeDetailsFragment", recipeDetailsFragment);
         if (newPlayerFragment != null)
@@ -175,7 +176,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepAdap
 
             newPlayerFragment = new PlayerFragment();
             videoUrl = mStepList.get(viewedStepPosition).videoUrl;
-
+            thumbnailUrl = mStepList.get(viewedStepPosition).thumbnailUrl;
             //handling steps with/without video
 
             newPlayerFragment.setStepVideoUrl(videoUrl);
